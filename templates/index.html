@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+    <head>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='styles/main.css') }}">
+
+        <meta charset="utf-8">
+        <title>StockRec - Logo</title>
+    </head>
+
+    <body>
+        <div class="content">
+            <h1>StockRec - Logo</h1>
+
+            <br>
+
+            <form method=POST enctype=multipart/form-data action="{{ url_for('upload') }}">
+                Select an image to find similar company logos:
+                <input type=file name=logo>
+                
+                <br><br>
+
+                <input type="submit" class="button" value="Get Recommendation">
+            </form>
+
+            <br><br>
+
+            {% if error_msg %}
+                <p style="background-color:LightCoral; padding: 3px;"><b>{{ error_msg }}</b></p>
+            {% endif %}
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        {{ message }}
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <br>
+
+            {% if filename %}
+                <img src="{{ url_for('display_image', filename=filename) }}" style="max-width:80px;">
+            {% endif %}
+
+            {% if recs %}
+                <p><b>Most similar to input logo:</b></p>
+
+                <table id="rec_table">
+                    <tr>
+                        {% for col in display_cols %}
+                            <th><b>{{ col }}</b></th>
+                        {% endfor %}
+                        <th>Logo</th>
+                    </tr>
+                    
+                    {% for rec in recs %}
+                    <tr>
+                        {% for col in cols %}
+                            <td>{{ rec[col] }}</td>
+                        {% endfor %}
+                        <td><img src="{{ url_for('static', filename='logo_cache/'+rec['symbol']+'.png') }}" style="max-width:80px;"></td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            {% endif %}    
+        </div>
+    </body>
+</html>
