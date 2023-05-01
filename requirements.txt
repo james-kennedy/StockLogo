@@ -1,4 +1,4 @@
-Flask==1.1.2
+Flask==2.3.2
 gevent==20.6.1
 pandas==1.0.4
 Pillow==7.1.2
